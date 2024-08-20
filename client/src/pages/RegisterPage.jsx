@@ -1,10 +1,32 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import styles from "./RegisterPage.module.css";
 import Form from "../components/Form";
+import validateForm from "../utils/validateForm";
 
 export default function RegisterPage() {
   const { user, setUser } = useContext(AppContext);
+	const [name, setName] = useState(user?.name || "");
+	const [email, setEmail] = useState(user?.email || "");
+	const [username, setUsername] = useState(user?.username || "");
+	const [phone, setPhone] = useState(user?.phone || "");
+	const [error, setError] = useState();
+	
+
+
+  const submitHandler = () => {
+		const { valid, invalid } = validateForm(name, email, username, phone);
+		if (!valid) {
+			setError({ ...invalid });
+      console.log(invalid);
+			return;
+		}
+
+		
+		setUser({ name, email, username, phone });
+		
+	};
+  
   return (
     <div className={styles.container}>
       <div className={styles.left}>
@@ -16,9 +38,20 @@ export default function RegisterPage() {
           <h2 className={styles.heading}>Super app</h2>
           <h3 className={styles.subHeading}>Create your new account</h3>
         </div>
-        <Form />
+        <Form
+					name={name}
+					setName={setName}
+					email={email}
+					setEmail={setEmail}
+					username={username}
+					setUsername={setUsername}
+					phone={phone}
+					setPhone={setPhone}
+					error={error}
+					setError={setError}
+					submitHandler={submitHandler}
+				/>
         <div className={styles.footer}>
-          <button>SIGNUP</button>
           <p>
             By clicking on Sign up. you agree to Superapp{" "}
             <span>Terms and Conditions of Use</span>
