@@ -3,6 +3,7 @@ import { AppContext } from "../context/AppContext";
 import styles from "./RegisterPage.module.css";
 import Form from "../components/Form";
 import validateForm from "../utils/validateForm";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const { user, setUser } = useContext(AppContext);
@@ -11,6 +12,7 @@ export default function RegisterPage() {
 	const [username, setUsername] = useState(user?.username || "");
 	const [phone, setPhone] = useState(user?.phone || "");
 	const [error, setError] = useState();
+  const navigate = useNavigate();
 	
 
 
@@ -21,10 +23,9 @@ export default function RegisterPage() {
       console.log(invalid);
 			return;
 		}
-
-		
+    setError(null);
 		setUser({ name, email, username, phone });
-		
+		navigate("/genres");
 	};
   
   return (
